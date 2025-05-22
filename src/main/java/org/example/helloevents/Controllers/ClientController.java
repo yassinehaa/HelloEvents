@@ -3,8 +3,6 @@ package org.example.helloevents.Controllers;
 import lombok.AllArgsConstructor;
 import org.example.helloevents.DTO.ClientDto;
 import org.example.helloevents.Services.ClientService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

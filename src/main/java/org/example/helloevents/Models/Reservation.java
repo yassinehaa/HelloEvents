@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idReservation;
     private LocalDateTime reservationDate;
+    private int nbPlaces;
     @ManyToOne
     @JoinColumn(name = "idClient")
     Client client;

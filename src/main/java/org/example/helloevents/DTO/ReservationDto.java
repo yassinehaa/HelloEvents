@@ -15,4 +15,8 @@ import java.time.LocalDateTime;
 public class ReservationDto implements Serializable {
     Long id;
     LocalDateTime reservationDate;
+    int nbPlaces;
+    Long IdClient;
+    Long IdEvent;
+
 }
