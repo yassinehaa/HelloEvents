@@ -9,32 +9,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/event")
 @AllArgsConstructor
 public class EventController {
     private final EventService eventService;
 
-    @PostMapping
+    @PostMapping("/add")
     private EventDto addEvent(EventDto eventDto) {
         return eventService.addEvent(eventDto);
     }
 
-    @GetMapping
-    private EventDto getEventById(Long id) {
+    @GetMapping("/{id}")
+    private EventDto getEventById(@PathVariable Long id) {
         return eventService.getEventById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     private List<EventDto> getAllEvents() {
         return eventService.getAllEvents();
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     private EventDto updateEvent(Long id, EventDto eventDto) {
         return eventService.updateEvent(id, eventDto);
     }
 
-    @DeleteMapping
-    private Void deleteEvent(Long id) {
+    @DeleteMapping("/{id}")
+    private Void deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
         return null;
     }

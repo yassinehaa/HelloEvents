@@ -8,20 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/client")
 @AllArgsConstructor
 public class ClientController {
 
     private final ClientService clientService;
-    @PostMapping
+    @PostMapping("/add")
     private ClientDto addClient(ClientDto clientDto) {
         return clientService.addClient(clientDto);
     }
-    @GetMapping
-    private ClientDto getClientById(Long id) {
+    @GetMapping("/{id}")
+    private ClientDto getClientById(@PathVariable Long id) {
         return clientService.getClientById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     private List<ClientDto> getAllClients() {
         return clientService.getAllClients();
     }
@@ -29,8 +30,8 @@ public class ClientController {
     private ClientDto updateClient(Long id, ClientDto clientDto) {
         return clientService.updateClient(id, clientDto);
     }
-    @DeleteMapping
-    private Void deleteClient(Long id) {
+    @DeleteMapping("/{id}")
+    private Void deleteClient(@PathVariable Long id) {
         clientService.deleteClient(id);
         return null;
     }
