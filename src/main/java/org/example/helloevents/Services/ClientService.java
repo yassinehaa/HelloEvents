@@ -1,13 +1,10 @@
 package org.example.helloevents.Services;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.example.helloevents.DTO.ClientDto;
 import org.example.helloevents.Models.Client;
 import org.example.helloevents.Repositories.ClientRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +36,7 @@ public class ClientService {
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
-            client.setName(clientDto.getName());
+            client.setUsername(clientDto.getUsername());
             client.setEmail(clientDto.getEmail());
             client.setPassword(clientDto.getPassword());
             Client updatedClient = clientRepository.save(client);
