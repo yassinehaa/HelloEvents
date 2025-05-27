@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,14 +14,17 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idEvent;
-
-    private String titre;
-    private String lieu;
-    private LocalDate date;
-    private String categorie;
-    private int placesdisponible;
+    private  Long idEvenement;
+    private  String titre;
+    private String type;
+    private int nombrePlase;
     private String description;
-    @OneToMany(mappedBy = "event")
-    private List<Reservation> reservation;
+    private  String dateDebut;
+    private  String dateFin;
+    @OneToMany(mappedBy = "event" ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Reservation> reservations;
+
+
+
 }
+

@@ -13,11 +13,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class EventDto implements Serializable {
-    Long id;
+    Long idEvenement;
     String titre;
-    String lieu;
-    LocalDate date;
-    String categorie;
-    int placesdisponible;
+    String type;
+    int nombrePlase;
     String description;
+    String dateDebut;
+    String dateFin;
 }

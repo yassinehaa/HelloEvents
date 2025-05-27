@@ -9,34 +9,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/event")
 @AllArgsConstructor
+@RequestMapping("/api/v1/events")
 public class EventController {
-    private final EventService eventService;
+    private EventService service;
 
-    @PostMapping("/add")
-    private EventDto addEvent(EventDto eventDto) {
-        return eventService.addEvent(eventDto);
+
+    @PostMapping("event")
+
+    public ResponseEntity<EventDto> saveEvent(@RequestBody EventDto e) {
+        EventDto saved = service.save(e);
+        return ResponseEntity.ok(saved);
     }
-
-    @GetMapping("/{id}")
-    private EventDto getEventById(@PathVariable Long id) {
-        return eventService.getEventById(id);
+    @GetMapping("events")
+    private ResponseEntity<List<EventDto>> findAllEvenements() {
+        List<EventDto> saved=service.findAll();
+        return ResponseEntity.ok(saved);
     }
-
-    @GetMapping("/all")
-    private List<EventDto> getAllEvents() {
-        return eventService.getAllEvents();
+    @GetMapping("{id}")
+    public ResponseEntity<EventDto> findEventById(@PathVariable Long id) {
+        EventDto evenementDto=service.finById(id);
+        return ResponseEntity.ok(evenementDto);
     }
-
-    @PutMapping("/{id}")
-    private EventDto updateEvent(Long id, EventDto eventDto) {
-        return eventService.updateEvent(id, eventDto);
+    @PutMapping("event/{id}")
+    public ResponseEntity<EventDto> updateEvent( @PathVariable Long id,@RequestBody EventDto evenementDto) {
+        EventDto update= service.update(id,evenementDto);
+        return ResponseEntity.ok(update);
     }
-
-    @DeleteMapping("/{id}")
-    private Void deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
-        return null;
+    @DeleteMapping("{id}")
+    public ResponseEntity<EventDto> deleteEvenement(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("type/{type}")
+    private ResponseEntity<List<EventDto>> findAllEvenementsByType(@PathVariable String type) {
+        List<EventDto> saved=service.findEventByType(type);
+        return ResponseEntity.ok(saved);
     }
 }

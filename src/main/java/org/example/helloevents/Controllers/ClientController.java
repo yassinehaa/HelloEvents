@@ -3,37 +3,40 @@ package org.example.helloevents.Controllers;
 import lombok.AllArgsConstructor;
 import org.example.helloevents.DTO.ClientDto;
 import org.example.helloevents.Services.ClientService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/client")
 @AllArgsConstructor
+@RequestMapping("/api/v1/client")
 public class ClientController {
-
-    private final ClientService clientService;
-    @PostMapping("/add")
-    private ClientDto addClient(ClientDto clientDto) {
-        return clientService.addClient(clientDto);
+    private ClientService clientService;
+    @PostMapping("client")
+    private ResponseEntity<ClientDto> save(@RequestBody ClientDto clientDto) {
+        ClientDto saved = clientService.save(clientDto);
+        return ResponseEntity.ok(saved);
     }
-    @GetMapping("/{id}")
-    private ClientDto getClientById(@PathVariable Long id) {
-        return clientService.getClientById(id);
+    @GetMapping("clients")
+    private ResponseEntity<List<ClientDto>> findAll() {
+        List<ClientDto> clients = clientService.findAll();
+        return ResponseEntity.ok(clients);
     }
-
-    @GetMapping("/all")
-    private List<ClientDto> getAllClients() {
-        return clientService.getAllClients();
+    @GetMapping("{id}")
+    private ResponseEntity<ClientDto> findById(@PathVariable Long id) {
+        ClientDto clientDto = clientService.findById(id);
+        return ResponseEntity.ok(clientDto);
     }
-    @PutMapping
-    private ClientDto updateClient(Long id, ClientDto clientDto) {
-        return clientService.updateClient(id, clientDto);
+    @DeleteMapping("{id}")
+    public ResponseEntity<ClientDto> delete(@PathVariable Long id) {
+        clientService.delete(id);
+        return ResponseEntity.ok().build();
     }
-    @DeleteMapping("/{id}")
-    private Void deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
-        return null;
+    @PutMapping("{id}")
+    private ResponseEntity<ClientDto> update(@PathVariable Long id, @RequestBody ClientDto clientDto) {
+        ClientDto saved = clientService.update(id, clientDto);
+        return ResponseEntity.ok(saved);
     }
 
 }

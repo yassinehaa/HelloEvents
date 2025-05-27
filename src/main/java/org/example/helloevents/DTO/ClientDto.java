@@ -1,17 +1,16 @@
 package org.example.helloevents.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class ClientDto implements Serializable {
-    Long id;
-    String username;
+    Long idClient;
+    String nom;
     String email;
     String password;
 }

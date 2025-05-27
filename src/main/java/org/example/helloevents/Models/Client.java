@@ -1,45 +1,39 @@
 package org.example.helloevents.Models;
 
-
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 @Entity
-@Builder
-@Inheritance(strategy = InheritanceType.JOINED)
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Client implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idClient;
 
-    private String username;
+    private String nom;
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
-    @OneToMany(mappedBy = "client")
-    private List<Reservation> reservation;
+
+    // autres champs éventuels…
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return Collections.emptyList(); // ou rôles si tu en ajoutes
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override

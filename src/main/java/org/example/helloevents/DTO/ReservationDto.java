@@ -3,20 +3,20 @@ package org.example.helloevents.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-import org.example.helloevents.Models.Reservation;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class ReservationDto implements Serializable {
-    Long id;
-    LocalDateTime reservationDate;
-    int nbPlaces;
-    Long IdClient;
-    Long IdEvent;
-
+    private Long idReservation;
+    private String nomReservation;
+    private String description;
+    private LocalDateTime dateReservation; // or LocalDate if time is not needed
+    private String place;
+    private double prix;
+    private Long idClient;
+    private Long idEvenement;
 }
