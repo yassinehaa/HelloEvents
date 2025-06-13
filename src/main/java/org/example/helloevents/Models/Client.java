@@ -1,11 +1,12 @@
+// Client.java
 package org.example.helloevents.Models;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -23,12 +24,11 @@ public class Client implements UserDetails {
     private String nom;
     private String email;
     private String password;
-
-    // autres champs éventuels…
+    private String role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // ou rôles si tu en ajoutes
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

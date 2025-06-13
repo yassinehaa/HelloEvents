@@ -1,5 +1,7 @@
+// ReservationService.java
 package org.example.helloevents.Services;
 
+import lombok.AllArgsConstructor;
 import org.example.helloevents.DTO.ReservationDto;
 import org.example.helloevents.Models.Client;
 import org.example.helloevents.Models.Event;
@@ -10,33 +12,45 @@ import org.example.helloevents.Repositories.ReservationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-@Service
-//@AllArgsConstructor
-public class ReservationService {
-    public ReservationService(ReservationRepository resrvationRepository, ClientRepository clientRepository, EventRepository evenementRepository, ModelMapper modelMapper) {
-        this.resrvationRepository = resrvationRepository;
-        this.clientRepository = clientRepository;
-        this.evenementRepository = evenementRepository;
-        this.modelMapper = modelMapper;
-    }
+import java.util.List;
 
-    private final ReservationRepository resrvationRepository;
+@Service
+@AllArgsConstructor
+public class ReservationService {
+    private final ReservationRepository reservationRepository;
     private final ClientRepository clientRepository;
-    private final EventRepository evenementRepository;
-    private ModelMapper modelMapper;
-    public ReservationDto reservation(ReservationDto resrvationDto) {
-        Client client=clientRepository.findById(resrvationDto.getIdClient())
-                .orElseThrow(()-> new RuntimeException("Client not found"));
-        Event evenement=evenementRepository.findById(resrvationDto.getIdEvenement())
-                .orElseThrow(()-> new RuntimeException("Event not found"));
-        Reservation resrvation=modelMapper.map(resrvationDto, Reservation.class);
-        resrvation.setClient(client);
-        resrvation.setEvent(evenement);
-        Reservation rserver=resrvationRepository.save(resrvation);
-        ReservationDto dto=modelMapper.map(rserver, ReservationDto.class);
-        dto.setIdClient(resrvationDto.getIdClient());
-        dto.setIdEvenement(resrvationDto.getIdEvenement());
+    private final EventRepository eventRepository;
+    private final ModelMapper modelMapper;
+
+    public ReservationDto reservation(ReservationDto reservationDto) {
+        Client client = clientRepository.findById(reservationDto.getIdClient())
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+        Event event = eventRepository.findById(reservationDto.getIdEvenement())
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        long currentReservations = reservationRepository.countByEvent(event);
+        if (event.getNombrePlase() <= currentReservations) {
+            throw new RuntimeException("No places available");
+        }
+
+        Reservation reservation = modelMapper.map(reservationDto, Reservation.class);
+        reservation.setClient(client);
+        reservation.setEvent(event);
+        Reservation saved = reservationRepository.save(reservation);
+        ReservationDto dto = modelMapper.map(saved, ReservationDto.class);
+        dto.setIdClient(client.getIdClient());
+        dto.setIdEvenement(event.getIdEvenement());
         return dto;
     }
 
+    public List<ReservationDto> findByClientId(Long idClient) {
+        return reservationRepository.findByClient_IdClient(idClient).stream()
+                .map(reservation -> {
+                    ReservationDto dto = modelMapper.map(reservation, ReservationDto.class);
+                    dto.setIdClient(reservation.getClient().getIdClient());
+                    dto.setIdEvenement(reservation.getEvent().getIdEvenement());
+                    return dto;
+                })
+                .toList();
+    }
 }

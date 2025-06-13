@@ -14,8 +14,8 @@ public class ReservationDto implements Serializable {
     private Long idReservation;
     private String nomReservation;
     private String description;
-    private LocalDateTime dateReservation; // or LocalDate if time is not needed
-    private String place;
+    private LocalDateTime dateReservation;
+    private Integer place;
     private double prix;
     private Long idClient;
     private Long idEvenement;
